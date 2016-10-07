@@ -1,0 +1,17 @@
+C:\Users\Jason\Documents\GitHub\AdvancedChroma\AdvancedChroma\bin\Release\AdvancedChroma.exe.config
+C:\Users\Jason\Documents\GitHub\AdvancedChroma\AdvancedChroma\bin\Release\AdvancedChroma.exe
+C:\Users\Jason\Documents\GitHub\AdvancedChroma\AdvancedChroma\bin\Release\AdvancedChroma.pdb
+C:\Users\Jason\Documents\GitHub\AdvancedChroma\AdvancedChroma\bin\Release\Corale.Colore.dll
+C:\Users\Jason\Documents\GitHub\AdvancedChroma\AdvancedChroma\bin\Release\Gma.System.MouseKeyHook.dll
+C:\Users\Jason\Documents\GitHub\AdvancedChroma\AdvancedChroma\bin\Release\Corale.Colore.xml
+C:\Users\Jason\Documents\GitHub\AdvancedChroma\AdvancedChroma\obj\Release\AdvancedChroma.csprojResolveAssemblyReference.cache
+C:\Users\Jason\Documents\GitHub\AdvancedChroma\AdvancedChroma\obj\Release\MainWindow.g.cs
+C:\Users\Jason\Documents\GitHub\AdvancedChroma\AdvancedChroma\obj\Release\App.g.cs
+C:\Users\Jason\Documents\GitHub\AdvancedChroma\AdvancedChroma\obj\Release\AdvancedChroma_MarkupCompile.cache
+C:\Users\Jason\Documents\GitHub\AdvancedChroma\AdvancedChroma\obj\Release\AdvancedChroma_MarkupCompile.lref
+C:\Users\Jason\Documents\GitHub\AdvancedChroma\AdvancedChroma\obj\Release\MainWindow.baml
+C:\Users\Jason\Documents\GitHub\AdvancedChroma\AdvancedChroma\obj\Release\AdvancedChroma.g.resources
+C:\Users\Jason\Documents\GitHub\AdvancedChroma\AdvancedChroma\obj\Release\AdvancedChroma.Properties.Resources.resources
+C:\Users\Jason\Documents\GitHub\AdvancedChroma\AdvancedChroma\obj\Release\AdvancedChroma.csproj.GenerateResource.Cache
+C:\Users\Jason\Documents\GitHub\AdvancedChroma\AdvancedChroma\obj\Release\AdvancedChroma.exe
+C:\Users\Jason\Documents\GitHub\AdvancedChroma\AdvancedChroma\obj\Release\AdvancedChroma.pdb

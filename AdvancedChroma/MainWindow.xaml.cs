@@ -16,6 +16,7 @@ using Corale.Colore.Core;
 using Corale.Colore.Razer.Keyboard;
 using ColoreColor = Corale.Colore.Core.Color;
 using System.Threading;
+using Gma.System.MouseKeyHook;
 
 namespace AdvancedChroma
 {
@@ -25,7 +26,8 @@ namespace AdvancedChroma
     public partial class MainWindow : Window
     {
         Thread runningEffect;
-        Boolean reactiveEnabled = false;
+        private IKeyboardMouseEvents m_GlobalHook;
+        Boolean isRunning = false;
 
         public MainWindow()
         {
@@ -34,9 +36,10 @@ namespace AdvancedChroma
 
         private void button_Click(object sender, RoutedEventArgs e)
         {
-            try {
+            try
+            {
                 runningEffect.Abort();
-                reactiveEnabled = false;
+                Unsubscribe();
             }
             catch (NullReferenceException e1)
             {
@@ -48,12 +51,14 @@ namespace AdvancedChroma
             }
             else if (((Button)sender).Name == "reactive")
             {
-                reactiveEnabled = true;
+                Subscribe();
             }
-            try {
+            try
+            {
                 Thread.CurrentThread.IsBackground = true;
                 runningEffect.Start();
-            } catch (Exception e1)
+            }
+            catch (Exception e1)
             {
 
             }
@@ -83,30 +88,99 @@ namespace AdvancedChroma
             }
         }
 
-        private void mouseClick(object sender, MouseEventArgs e)
+        public void Subscribe()
         {
-            if (e.LeftButton == MouseButtonState.Pressed)
+            // Note: for the application hook, use the Hook.AppEvents() instead
+            m_GlobalHook = Hook.GlobalEvents();
+            m_GlobalHook.MouseDownExt += GlobalHookMouseDownExt;
+        }
+
+        private void GlobalHookMouseDownExt(object sender, MouseEventExtArgs e)
+        {
+            if (!isRunning)
             {
-                if (reactiveEnabled)
-                {
-                    // Currently clicking is only limited to the Window. Need to find a way to get click even if outside window.
-                    Chroma.Instance.Keyboard.SetAll(new ColoreColor(0, 255, 0));
-                    int i1 = 255;
-                    for (int i = 255; i > 0; i--)
-                    {
-                        Chroma.Instance.Keyboard.SetAll(new ColoreColor(i, i1, 0));
-                        Thread.Sleep(1);
-                        i1++;
-                    }
-                    i1 = 0;
-                    for (int i = 255; i > 0; i--)
-                    {
-                        Chroma.Instance.Keyboard.SetAll(new ColoreColor(i1, i, 0));
-                        Thread.Sleep(1);
-                        i1++;
-                    }
-                }
+                ThreadPool.QueueUserWorkItem(_ => React());
             }
+        }
+
+        public void Unsubscribe()
+        {
+            m_GlobalHook.MouseDownExt -= GlobalHookMouseDownExt;
+
+            //It is recommened to dispose it
+            m_GlobalHook.Dispose();
+        }
+
+        private void React()
+        {
+            double defaultRed = 0;
+            double defaultGreen = 0;
+            double defaultBlue = 255;
+
+            double newTargetRed = 255;
+            double newTargetGreen = 0;
+            double newTargetBlue = 0;
+
+            ColoreColor defaultColor = new ColoreColor(defaultRed, defaultGreen, defaultBlue);
+            ColoreColor reactColor = new ColoreColor(newTargetRed, newTargetGreen, newTargetBlue);
+            isRunning = true;
+            Chroma.Instance.Keyboard.SetAll(defaultColor);
+            Chroma.Instance.Headset.SetAll(defaultColor);
+            Chroma.Instance.Mousepad.SetAll(defaultColor);
+            Chroma.Instance.Keypad.SetAll(defaultColor);
+            Chroma.Instance.Mouse.SetAll(defaultColor);
+
+            double redStep = (defaultRed - newTargetRed) / 255;
+            double greenStep = (defaultGreen - newTargetGreen) / 255;
+            double blueStep = (defaultBlue - newTargetBlue) / 255;
+
+            double displayedRed = defaultRed;
+            double displayedGreen = defaultGreen;
+            double displayedBlue = defaultBlue;
+            for (int i = 0; i < 255; i++)
+            {
+                displayedRed -=  redStep;
+                displayedGreen -=  greenStep;
+                displayedBlue -= blueStep;
+
+                if (defaultRed < newTargetRed && displayedRed > newTargetRed) displayedRed = newTargetRed;
+                if (defaultGreen < newTargetGreen && displayedGreen > newTargetGreen) displayedGreen = newTargetGreen;
+                if (defaultBlue < newTargetBlue && displayedBlue > newTargetBlue) displayedBlue = newTargetBlue;
+                if (defaultRed > newTargetRed && displayedRed < newTargetRed) displayedRed = newTargetRed;
+                if (defaultGreen > newTargetGreen && displayedGreen < newTargetGreen) displayedGreen = newTargetGreen;
+                if (defaultBlue > newTargetBlue && displayedBlue < newTargetBlue) displayedBlue = newTargetBlue;
+
+                Chroma.Instance.Keyboard.SetAll(new ColoreColor(displayedRed, displayedGreen, displayedBlue));
+                Chroma.Instance.Headset.SetAll(new ColoreColor(displayedRed, displayedGreen, displayedBlue));
+                Chroma.Instance.Mousepad.SetAll(new ColoreColor(displayedRed, displayedGreen, displayedBlue));
+                Chroma.Instance.Keypad.SetAll(new ColoreColor(displayedRed, displayedGreen, displayedBlue));
+                Chroma.Instance.Mouse.SetAll(new ColoreColor(displayedRed, displayedGreen, displayedBlue));
+
+                Thread.Sleep(1);
+            }
+            Thread.Sleep(500);
+            for (int i = 0; i < 255; i++)
+            {
+                displayedRed += redStep;
+                displayedGreen += greenStep;
+                displayedBlue += blueStep;
+
+                if (defaultRed < newTargetRed && displayedRed < defaultRed) displayedRed = defaultRed;
+                if (defaultGreen < newTargetGreen && displayedGreen < defaultGreen) displayedGreen = defaultGreen;
+                if (defaultBlue < newTargetBlue && displayedBlue < defaultBlue) displayedBlue = defaultBlue;
+                if (defaultRed > newTargetRed && displayedRed > defaultRed) displayedRed = defaultRed;
+                if (defaultGreen > newTargetGreen && displayedGreen > defaultGreen) displayedGreen = defaultGreen;
+                if (defaultBlue > newTargetBlue && displayedBlue > defaultBlue) displayedBlue = defaultBlue;
+
+                Chroma.Instance.Keyboard.SetAll(new ColoreColor(displayedRed, displayedGreen, displayedBlue));
+                Chroma.Instance.Headset.SetAll(new ColoreColor(displayedRed, displayedGreen, displayedBlue));
+                Chroma.Instance.Mousepad.SetAll(new ColoreColor(displayedRed, displayedGreen, displayedBlue));
+                Chroma.Instance.Keypad.SetAll(new ColoreColor(displayedRed, displayedGreen, displayedBlue));
+                Chroma.Instance.Mouse.SetAll(new ColoreColor(displayedRed, displayedGreen, displayedBlue));
+
+                Thread.Sleep(1);
+            }
+            isRunning = false;
         }
     }
 }

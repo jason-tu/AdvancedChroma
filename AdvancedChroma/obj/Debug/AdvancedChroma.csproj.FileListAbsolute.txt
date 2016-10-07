@@ -14,3 +14,4 @@ C:\Users\Jason\Documents\GitHub\AdvancedChroma\AdvancedChroma\obj\Debug\Advanced
 C:\Users\Jason\Documents\GitHub\AdvancedChroma\AdvancedChroma\obj\Debug\AdvancedChroma.pdb
 C:\Users\Jason\Documents\GitHub\AdvancedChroma\AdvancedChroma\bin\Debug\Corale.Colore.dll
 C:\Users\Jason\Documents\GitHub\AdvancedChroma\AdvancedChroma\bin\Debug\Corale.Colore.xml
+C:\Users\Jason\Documents\GitHub\AdvancedChroma\AdvancedChroma\bin\Debug\Gma.System.MouseKeyHook.dll
