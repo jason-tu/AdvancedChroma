@@ -1,0 +1,16 @@
+C:\Users\Jason\Documents\GitHub\AdvancedChroma\AdvancedChroma\bin\Debug\AdvancedChroma.exe.config
+C:\Users\Jason\Documents\GitHub\AdvancedChroma\AdvancedChroma\bin\Debug\AdvancedChroma.exe
+C:\Users\Jason\Documents\GitHub\AdvancedChroma\AdvancedChroma\bin\Debug\AdvancedChroma.pdb
+C:\Users\Jason\Documents\GitHub\AdvancedChroma\AdvancedChroma\obj\Debug\AdvancedChroma.csprojResolveAssemblyReference.cache
+C:\Users\Jason\Documents\GitHub\AdvancedChroma\AdvancedChroma\obj\Debug\MainWindow.g.cs
+C:\Users\Jason\Documents\GitHub\AdvancedChroma\AdvancedChroma\obj\Debug\App.g.cs
+C:\Users\Jason\Documents\GitHub\AdvancedChroma\AdvancedChroma\obj\Debug\AdvancedChroma_MarkupCompile.cache
+C:\Users\Jason\Documents\GitHub\AdvancedChroma\AdvancedChroma\obj\Debug\AdvancedChroma_MarkupCompile.lref
+C:\Users\Jason\Documents\GitHub\AdvancedChroma\AdvancedChroma\obj\Debug\MainWindow.baml
+C:\Users\Jason\Documents\GitHub\AdvancedChroma\AdvancedChroma\obj\Debug\AdvancedChroma.g.resources
+C:\Users\Jason\Documents\GitHub\AdvancedChroma\AdvancedChroma\obj\Debug\AdvancedChroma.Properties.Resources.resources
+C:\Users\Jason\Documents\GitHub\AdvancedChroma\AdvancedChroma\obj\Debug\AdvancedChroma.csproj.GenerateResource.Cache
+C:\Users\Jason\Documents\GitHub\AdvancedChroma\AdvancedChroma\obj\Debug\AdvancedChroma.exe
+C:\Users\Jason\Documents\GitHub\AdvancedChroma\AdvancedChroma\obj\Debug\AdvancedChroma.pdb
+C:\Users\Jason\Documents\GitHub\AdvancedChroma\AdvancedChroma\bin\Debug\Corale.Colore.dll
+C:\Users\Jason\Documents\GitHub\AdvancedChroma\AdvancedChroma\bin\Debug\Corale.Colore.xml
