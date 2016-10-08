@@ -34,6 +34,7 @@ namespace AdvancedChroma
         public MainWindow()
         {
             InitializeComponent();
+            Chroma.Instance.Initialize();
         }
 
         private void button_Click(object sender, RoutedEventArgs e)
@@ -43,7 +44,7 @@ namespace AdvancedChroma
                 _runningEffect?.Abort();
                 Unsubscribe();
 
-               
+
 
             }
             catch
@@ -51,11 +52,11 @@ namespace AdvancedChroma
 
             }
 
-            if (((Button) sender).Name == "starlight")
+            if (((Button)sender).Name == "starlight")
             {
                 _runningEffect = new Thread(Starlight);
             }
-            else if (((Button) sender).Name == "reactive")
+            else if (((Button)sender).Name == "reactive")
             {
                 Subscribe();
             }
@@ -74,7 +75,7 @@ namespace AdvancedChroma
         {
 
             
-            Chroma.Instance.Initialize();
+
 
             Random rand = new Random();
             while (true)
@@ -97,11 +98,11 @@ namespace AdvancedChroma
                 //Keyboard.Instance.SetAll(new Color(0, 255, 0));
                 Chroma.Instance.Keyboard.SetAll(new ColoreColor(0, 0, 0));
             }
-            
-            
-           
 
-            
+
+
+
+
 
 
         }
@@ -131,14 +132,15 @@ namespace AdvancedChroma
 
         private void React()
         {
-            if(_isRunning) return;
-            Chroma.Instance.Initialize();
+            if (_isRunning) return;
+
 
             _isRunning = true;
-
-            Transition(ColoreColor.Red, ColoreColor.Blue, true, 500, 1000);
             
-           Chroma.Instance.SetAll(ColoreColor.Black);
+            Transition(ColoreColor.Red, ColoreColor.Blue, true, 500, 1000);
+
+
+
             _isRunning = false;
             //Old code below
 
@@ -210,56 +212,72 @@ namespace AdvancedChroma
             isRunning = false;
             */
         }
-        
-        private static void Transition(ColoreColor first, ColoreColor second, bool back,int rest, double duration)
+
+        private static void Transition(ColoreColor first, ColoreColor second, bool back, int rest, int duration)
         {
-           
-           //Set first color
-           Chroma.Instance.SetAll(first);
+
+            //Set first color
+
+
 
             //calculate
-            var redStep = (double) (first.R - second.R)/255;
-            var greenStep = (double) (first.G - second.G)/255;
-            var blueStep = (double) (first.B - second.B)/255;
-            int sleepTime =(int)duration/255;
+            var redStep = (first.R - second.R) / 255;
+            var greenStep = (first.G - second.G) / 255;
+            var blueStep = (first.B - second.B) / 255;
+            int sleepTime = duration / 255;
 
             //set current color
-            double tempRed = first.R;
-            double tempGreen = first.G;
-            double tempBlue = first.B;
+            int tempRed = first.R;
+            int tempGreen = first.G;
+            int tempBlue = first.B;
 
             //Transition to second color
             for (int i = 0; i < 255; i++)
             {
-                
-                tempRed += redStep;
-                tempGreen += greenStep;
-                tempBlue += blueStep;
-               
-                Chroma.Instance.SetAll(new ColoreColor(tempRed,tempGreen,tempBlue));
+
+                tempRed -= redStep;
+                tempGreen -= greenStep;
+                tempBlue -= blueStep;
+
+
+
+                Chroma.Instance.SetAll(new ColoreColor((byte)tempRed, (byte)tempGreen, (byte)tempBlue));
 
                 Thread.Sleep(sleepTime);
 
 
             }
             //Color rests
+            
             Thread.Sleep(rest);
 
             //leave animation if bool is false
-            if (!back) return;
+            if (!back)
+            {
+
+                return;
+            }
+
+
 
             //Transition to first color
+
+
+
             for (int i = 0; i < 255; i++)
             {
-                tempRed -= redStep;
-                tempGreen -= greenStep;
-                tempBlue -= blueStep;
 
-                Chroma.Instance.SetAll(new ColoreColor(tempRed, tempGreen, tempBlue));
+                tempRed += redStep;
+                tempGreen += greenStep;
+                tempBlue += blueStep;
+
+                Chroma.Instance.SetAll(new ColoreColor((byte)tempRed, (byte)tempGreen, (byte)tempBlue));
 
                 Thread.Sleep(sleepTime);
             }
-            
+
         }
+
+
     }
 }
