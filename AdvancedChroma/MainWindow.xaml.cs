@@ -30,6 +30,10 @@ namespace AdvancedChroma
         Thread _runningEffect;
         private IKeyboardMouseEvents _mGlobalHook;
         Boolean _isRunning = false;
+        ColoreColor defaultColorReactive;
+        ColoreColor targetColorReactive;
+        int restReactive;
+        int durationReactive;
 
         public MainWindow()
         {
@@ -43,9 +47,7 @@ namespace AdvancedChroma
             {
                 _runningEffect?.Abort();
                 Unsubscribe();
-
-
-
+                //Chroma.Instance.Uninitialize();
             }
             catch
             {
@@ -54,10 +56,18 @@ namespace AdvancedChroma
 
             if (((Button)sender).Name == "starlight")
             {
+                Chroma.Instance.Initialize();
                 _runningEffect = new Thread(Starlight);
             }
             else if (((Button)sender).Name == "reactive")
             {
+                Chroma.Instance.Initialize();
+                defaultColorReactive = new ColoreColor(Convert.ToByte(defaultColorRedReactive.Text), Convert.ToByte(defaultColorGreenReactive.Text), Convert.ToByte(defaultColorBlueReactive.Text));
+                targetColorReactive = new ColoreColor(Convert.ToByte(targetColorRedReactive.Text), Convert.ToByte(targetColorGreenReactive.Text), Convert.ToByte(targetColorBlueReactive.Text));
+                restReactive = (int)(Convert.ToDouble(restTextBoxReactive.Text) * 1000);
+                Chroma.Instance.SetAll(defaultColorReactive);
+                durationReactive = (int)(Convert.ToDouble(durationTextBoxReactive.Text) * 1000);
+
                 Subscribe();
             }
             try
@@ -67,16 +77,12 @@ namespace AdvancedChroma
             }
             catch (Exception e1)
             {
-
+                Console.Write(e1);
             }
         }
 
         public static void Starlight()
         {
-
-            
-
-
             Random rand = new Random();
             while (true)
             {
@@ -98,13 +104,6 @@ namespace AdvancedChroma
                 //Keyboard.Instance.SetAll(new Color(0, 255, 0));
                 Chroma.Instance.Keyboard.SetAll(new ColoreColor(0, 0, 0));
             }
-
-
-
-
-
-
-
         }
 
         public void Subscribe()
@@ -134,150 +133,61 @@ namespace AdvancedChroma
         {
             if (_isRunning) return;
 
-
             _isRunning = true;
-            
-            Transition(ColoreColor.Red, ColoreColor.Blue, true, 500, 1000);
 
-
+            Transition(defaultColorReactive, targetColorReactive, true, restReactive, durationReactive);
 
             _isRunning = false;
-            //Old code below
-
-            /*
-            Chroma.Instance.Initialize();
-            double defaultRed = 0;
-            double defaultGreen = 0;
-            double defaultBlue = 255;
-
-            double newTargetRed = 255;
-            double newTargetGreen = 0;
-            double newTargetBlue = 0;
-
-            ColoreColor defaultColor = new ColoreColor(defaultRed, defaultGreen, defaultBlue);
-            ColoreColor reactColor = new ColoreColor(newTargetRed, newTargetGreen, newTargetBlue);
-            isRunning = true;
-            Chroma.Instance.Keyboard.SetAll(defaultColor);
-            Chroma.Instance.Headset.SetAll(defaultColor);
-            Chroma.Instance.Mousepad.SetAll(defaultColor);
-            Chroma.Instance.Keypad.SetAll(defaultColor);
-            Chroma.Instance.Mouse.SetAll(defaultColor);
-
-            double redStep = (defaultRed - newTargetRed)/255;
-            double greenStep = (defaultGreen - newTargetGreen)/255;
-            double blueStep = (defaultBlue - newTargetBlue)/255;
-
-            double displayedRed = defaultRed;
-            double displayedGreen = defaultGreen;
-            double displayedBlue = defaultBlue;
-            for (int i = 0; i < 255; i++)
-            {
-                displayedRed -= redStep;
-                displayedGreen -= greenStep;
-                displayedBlue -= blueStep;
-
-                if (defaultRed < newTargetRed && displayedRed > newTargetRed) displayedRed = newTargetRed;
-                if (defaultGreen < newTargetGreen && displayedGreen > newTargetGreen) displayedGreen = newTargetGreen;
-                if (defaultBlue < newTargetBlue && displayedBlue > newTargetBlue) displayedBlue = newTargetBlue;
-                if (defaultRed > newTargetRed && displayedRed < newTargetRed) displayedRed = newTargetRed;
-                if (defaultGreen > newTargetGreen && displayedGreen < newTargetGreen) displayedGreen = newTargetGreen;
-                if (defaultBlue > newTargetBlue && displayedBlue < newTargetBlue) displayedBlue = newTargetBlue;
-
-                Chroma.Instance.SetAll(new ColoreColor(displayedRed, displayedGreen, displayedBlue));
-
-
-                Thread.Sleep(1);
-            }
-            Chroma.Instance.SetAll(new ColoreColor(displayedRed, displayedGreen, displayedBlue));
-
-
-            for (int i = 0; i < 255; i++)
-            {
-                displayedRed += redStep;
-                displayedGreen += greenStep;
-                displayedBlue += blueStep;
-
-                if (defaultRed < newTargetRed && displayedRed < defaultRed) displayedRed = defaultRed;
-                if (defaultGreen < newTargetGreen && displayedGreen < defaultGreen) displayedGreen = defaultGreen;
-                if (defaultBlue < newTargetBlue && displayedBlue < defaultBlue) displayedBlue = defaultBlue;
-                if (defaultRed > newTargetRed && displayedRed > defaultRed) displayedRed = defaultRed;
-                if (defaultGreen > newTargetGreen && displayedGreen > defaultGreen) displayedGreen = defaultGreen;
-                if (defaultBlue > newTargetBlue && displayedBlue > defaultBlue) displayedBlue = defaultBlue;
-
-
-                Chroma.Instance.SetAll(new ColoreColor(displayedRed, displayedGreen, displayedBlue));
-
-                Thread.Sleep(1);
-            }
-            isRunning = false;
-            */
         }
 
         private static void Transition(ColoreColor first, ColoreColor second, bool back, int rest, int duration)
         {
+            try {             //calculate
+                var redStep = (first.R - second.R) / 255;
+                var greenStep = (first.G - second.G) / 255;
+                var blueStep = (first.B - second.B) / 255;
+                int sleepTime = duration / 255;
 
-            //Set first color
+                //set current color
+                int tempRed = first.R;
+                int tempGreen = first.G;
+                int tempBlue = first.B;
 
+                //Transition to second color
+                for (int i = 0; i < 255; i++)
+                {
+                    tempRed -= redStep;
+                    tempGreen -= greenStep;
+                    tempBlue -= blueStep;
 
+                    Chroma.Instance.SetAll(new ColoreColor((byte)tempRed, (byte)tempGreen, (byte)tempBlue));
 
-            //calculate
-            var redStep = (first.R - second.R) / 255;
-            var greenStep = (first.G - second.G) / 255;
-            var blueStep = (first.B - second.B) / 255;
-            int sleepTime = duration / 255;
+                    Thread.Sleep(sleepTime);
+                }
 
-            //set current color
-            int tempRed = first.R;
-            int tempGreen = first.G;
-            int tempBlue = first.B;
+                //Color rests
+                Thread.Sleep(rest);
 
-            //Transition to second color
-            for (int i = 0; i < 255; i++)
+                //leave animation if bool is false
+                if (!back)
+                {
+                    return;
+                }
+
+                for (int i = 0; i < 255; i++)
+                {
+                    tempRed += redStep;
+                    tempGreen += greenStep;
+                    tempBlue += blueStep;
+
+                    Chroma.Instance.SetAll(new ColoreColor((byte)tempRed, (byte)tempGreen, (byte)tempBlue));
+
+                    Thread.Sleep(sleepTime);
+                }
+            } catch (Corale.Colore.Razer.NativeCallException e1)
             {
 
-                tempRed -= redStep;
-                tempGreen -= greenStep;
-                tempBlue -= blueStep;
-
-
-
-                Chroma.Instance.SetAll(new ColoreColor((byte)tempRed, (byte)tempGreen, (byte)tempBlue));
-
-                Thread.Sleep(sleepTime);
-
-
             }
-            //Color rests
-            
-            Thread.Sleep(rest);
-
-            //leave animation if bool is false
-            if (!back)
-            {
-
-                return;
-            }
-
-
-
-            //Transition to first color
-
-
-
-            for (int i = 0; i < 255; i++)
-            {
-
-                tempRed += redStep;
-                tempGreen += greenStep;
-                tempBlue += blueStep;
-
-                Chroma.Instance.SetAll(new ColoreColor((byte)tempRed, (byte)tempGreen, (byte)tempBlue));
-
-                Thread.Sleep(sleepTime);
-            }
-
         }
-
-
     }
 }
