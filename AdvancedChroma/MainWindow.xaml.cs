@@ -19,6 +19,7 @@ using System.Threading;
 using Corale.Colore.Razer.Keyboard.Effects;
 using Gma.System.MouseKeyHook;
 using Duration = Corale.Colore.Razer.Keyboard.Effects.Duration;
+using System.Collections;
 
 namespace AdvancedChroma
 {
@@ -47,7 +48,6 @@ namespace AdvancedChroma
             {
                 _runningEffect?.Abort();
                 Unsubscribe();
-                //Chroma.Instance.Uninitialize();
             }
             catch
             {
@@ -56,12 +56,10 @@ namespace AdvancedChroma
 
             if (((Button)sender).Name == "starlight")
             {
-                Chroma.Instance.Initialize();
                 _runningEffect = new Thread(Starlight);
             }
             else if (((Button)sender).Name == "reactive")
             {
-                Chroma.Instance.Initialize();
                 defaultColorReactive = new ColoreColor(Convert.ToByte(defaultColorRedReactive.Text), Convert.ToByte(defaultColorGreenReactive.Text), Convert.ToByte(defaultColorBlueReactive.Text));
                 targetColorReactive = new ColoreColor(Convert.ToByte(targetColorRedReactive.Text), Convert.ToByte(targetColorGreenReactive.Text), Convert.ToByte(targetColorBlueReactive.Text));
                 restReactive = (int)(Convert.ToDouble(restTextBoxReactive.Text) * 1000);
@@ -75,34 +73,37 @@ namespace AdvancedChroma
                 Thread.CurrentThread.IsBackground = true;
                 _runningEffect.Start();
             }
-            catch (Exception e1)
+            catch
             {
-                Console.Write(e1);
             }
         }
 
         public static void Starlight()
         {
             Random rand = new Random();
+            ColoreColor defaultColor = new ColoreColor((byte)0, (byte)0, (byte)0);
+            //Chroma.Instance.Initialize();
+            Chroma.Instance.Keyboard.SetAll(defaultColor);
+
+            int maxKeys = 10;
+            int minKeys = 5;
+
             while (true)
             {
                 // Select random key, set it to random color etc.
-                for (int i = 0; i < rand.Next(1, 5); i++)
+                try
                 {
-                    try
-                    {
-                        Chroma.Instance.Keyboard[rand.Next(0, Constants.MaxRows), rand.Next(0, Constants.MaxColumns)] =
-                            new ColoreColor(rand.Next(1, 255), rand.Next(1, 255), rand.Next(1, 255));
-                    }
-                    catch (Exception e)
-                    {
+                    int targetRed = 0;
+                    int targetGreen = 0;
+                    int targetBlue = 255;
 
-                    }
+                    Parallel.For(0, 3, i => {TransitionStarlight(defaultColor, new ColoreColor((byte)targetRed, (byte)targetGreen, (byte)targetBlue), 500, 500);});
+
                 }
-                Thread.Sleep(500);
+                catch
+                {
 
-                //Keyboard.Instance.SetAll(new Color(0, 255, 0));
-                Chroma.Instance.Keyboard.SetAll(new ColoreColor(0, 0, 0));
+                }
             }
         }
 
@@ -140,54 +141,98 @@ namespace AdvancedChroma
             _isRunning = false;
         }
 
+        private static void TransitionStarlight(ColoreColor first, ColoreColor second, int rest, int duration)
+        {
+            Random rand = new Random();
+            int keyX = rand.Next(0, Constants.MaxRows);
+            int keyY = rand.Next(0, Constants.MaxColumns);
+            //calculate
+            var redStep = (first.R - second.R) / 255;
+            var greenStep = (first.G - second.G) / 255;
+            var blueStep = (first.B - second.B) / 255;
+            int sleepTime = duration / 255;
+
+            //set current color
+            int tempRed = first.R;
+            int tempGreen = first.G;
+            int tempBlue = first.B;
+
+            //Transition to second color
+            for (int i = 0; i < 255; i++)
+            {
+                tempRed -= redStep;
+                tempGreen -= greenStep;
+                tempBlue -= blueStep;
+
+                    Chroma.Instance.Keyboard[(int)keyX, (int)keyY] =
+                                    new ColoreColor((byte)tempRed, (byte)tempGreen, (byte)tempBlue);
+
+                Thread.Sleep(sleepTime);
+            }
+
+            //Color rests
+            Thread.Sleep(rest);
+
+            for (int i = 0; i < 255; i++)
+            {
+                tempRed += redStep;
+                tempGreen += greenStep;
+                tempBlue += blueStep;
+                
+                    Chroma.Instance.Keyboard[(int)keyX, (int)keyY] =
+                                    new ColoreColor((byte)tempRed, (byte)tempGreen, (byte)tempBlue);
+
+                Thread.Sleep(sleepTime);
+            }
+        }
+
+       
+
         private static void Transition(ColoreColor first, ColoreColor second, bool back, int rest, int duration)
         {
-            try {             //calculate
-                var redStep = (first.R - second.R) / 255;
-                var greenStep = (first.G - second.G) / 255;
-                var blueStep = (first.B - second.B) / 255;
-                int sleepTime = duration / 255;
+            //calculate
+            var redStep = (first.R - second.R) / 255;
+            var greenStep = (first.G - second.G) / 255;
+            var blueStep = (first.B - second.B) / 255;
+            int sleepTime = duration / 255;
 
-                //set current color
-                int tempRed = first.R;
-                int tempGreen = first.G;
-                int tempBlue = first.B;
+            //set current color
+            int tempRed = first.R;
+            int tempGreen = first.G;
+            int tempBlue = first.B;
 
-                //Transition to second color
-                for (int i = 0; i < 255; i++)
-                {
-                    tempRed -= redStep;
-                    tempGreen -= greenStep;
-                    tempBlue -= blueStep;
-
-                    Chroma.Instance.SetAll(new ColoreColor((byte)tempRed, (byte)tempGreen, (byte)tempBlue));
-
-                    Thread.Sleep(sleepTime);
-                }
-
-                //Color rests
-                Thread.Sleep(rest);
-
-                //leave animation if bool is false
-                if (!back)
-                {
-                    return;
-                }
-
-                for (int i = 0; i < 255; i++)
-                {
-                    tempRed += redStep;
-                    tempGreen += greenStep;
-                    tempBlue += blueStep;
-
-                    Chroma.Instance.SetAll(new ColoreColor((byte)tempRed, (byte)tempGreen, (byte)tempBlue));
-
-                    Thread.Sleep(sleepTime);
-                }
-            } catch (Corale.Colore.Razer.NativeCallException e1)
+            //Transition to second color
+            for (int i = 0; i < 255; i++)
             {
+                tempRed -= redStep;
+                tempGreen -= greenStep;
+                tempBlue -= blueStep;
 
+                Chroma.Instance.SetAll(new ColoreColor((byte)tempRed, (byte)tempGreen, (byte)tempBlue));
+
+                Thread.Sleep(sleepTime);
+            }
+
+            //Color rests
+            Thread.Sleep(rest);
+
+            //leave animation if bool is false
+            if (!back)
+            {
+                return;
+            }
+
+            for (int i = 0; i < 255; i++)
+            {
+                tempRed += redStep;
+                tempGreen += greenStep;
+                tempBlue += blueStep;
+
+                Chroma.Instance.SetAll(new ColoreColor((byte)tempRed, (byte)tempGreen, (byte)tempBlue));
+
+                Thread.Sleep(sleepTime);
             }
         }
     }
 }
+
