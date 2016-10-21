@@ -85,25 +85,30 @@ namespace AdvancedChroma
             //Chroma.Instance.Initialize();
             Chroma.Instance.Keyboard.SetAll(defaultColor);
 
-            int maxKeys = 10;
-            int minKeys = 5;
+            int maxKeys = 4;
+            int minKeys = 1;
+
+            int targetRed = 255;
+            int targetGreen = 51;
+            int targetBlue = 153;
+            ColoreColor targetColor = new ColoreColor((byte)targetRed, (byte)targetGreen, (byte)targetBlue);
+
+            List<StarlightKey> starlightKeys = new List<StarlightKey>();
+            for (int i = minKeys; i < maxKeys; i++)
+            {
+                // TODO: Make sure no duplicate keys.
+                starlightKeys.Add(new StarlightKey(defaultColor, targetColor, rand.Next(0, Constants.MaxRows), rand.Next(0, Constants.MaxColumns)));
+            }
 
             while (true)
             {
-                // Select random key, set it to random color etc.
-                try
+
+                foreach (StarlightKey sk in starlightKeys)
                 {
-                    int targetRed = 0;
-                    int targetGreen = 0;
-                    int targetBlue = 255;
-
-                    Parallel.For(0, 3, i => {TransitionStarlight(defaultColor, new ColoreColor((byte)targetRed, (byte)targetGreen, (byte)targetBlue), 500, 500);});
-
+                    sk.work();
+                    //Thread.Sleep(0);
                 }
-                catch
-                {
 
-                }
             }
         }
 
@@ -140,53 +145,6 @@ namespace AdvancedChroma
 
             _isRunning = false;
         }
-
-        private static void TransitionStarlight(ColoreColor first, ColoreColor second, int rest, int duration)
-        {
-            Random rand = new Random();
-            int keyX = rand.Next(0, Constants.MaxRows);
-            int keyY = rand.Next(0, Constants.MaxColumns);
-            //calculate
-            var redStep = (first.R - second.R) / 255;
-            var greenStep = (first.G - second.G) / 255;
-            var blueStep = (first.B - second.B) / 255;
-            int sleepTime = duration / 255;
-
-            //set current color
-            int tempRed = first.R;
-            int tempGreen = first.G;
-            int tempBlue = first.B;
-
-            //Transition to second color
-            for (int i = 0; i < 255; i++)
-            {
-                tempRed -= redStep;
-                tempGreen -= greenStep;
-                tempBlue -= blueStep;
-
-                    Chroma.Instance.Keyboard[(int)keyX, (int)keyY] =
-                                    new ColoreColor((byte)tempRed, (byte)tempGreen, (byte)tempBlue);
-
-                Thread.Sleep(sleepTime);
-            }
-
-            //Color rests
-            Thread.Sleep(rest);
-
-            for (int i = 0; i < 255; i++)
-            {
-                tempRed += redStep;
-                tempGreen += greenStep;
-                tempBlue += blueStep;
-                
-                    Chroma.Instance.Keyboard[(int)keyX, (int)keyY] =
-                                    new ColoreColor((byte)tempRed, (byte)tempGreen, (byte)tempBlue);
-
-                Thread.Sleep(sleepTime);
-            }
-        }
-
-       
 
         private static void Transition(ColoreColor first, ColoreColor second, bool back, int rest, int duration)
         {
