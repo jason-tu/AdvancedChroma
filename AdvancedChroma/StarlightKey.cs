@@ -13,22 +13,22 @@ namespace AdvancedChroma
 {
     class StarlightKey
     {
-        ColoreColor first;
-        ColoreColor second;
-        double redStep;
-        double greenStep;
-        double blueStep;
+        public ColoreColor first;
+        public ColoreColor second;
+        public double redStep;
+        public double greenStep;
+        public double blueStep;
 
-        double currRed;
-        double currGreen;
-        double currBlue;
+        public double currRed;
+        public double currGreen;
+        public double currBlue;
 
-        int keyX;
-        int keyY;
+        public int keyX;
+        public int keyY;
 
-        bool fadingOut = false;
+        public int step = 0;
 
-        int stepsTaken = 0;
+        public bool fadingOut = false;
 
         public StarlightKey(ColoreColor first, ColoreColor second, int keyX, int keyY)
         {
@@ -37,82 +37,14 @@ namespace AdvancedChroma
             redStep = ((double)first.R - (double)second.R) / 255;
             greenStep = ((double)first.G - (double)second.G) / 255;
             blueStep = ((double)first.B - (double)second.B) / 255;
-
-            Console.Write(blueStep);
-
-            currRed = first.R;
-            currGreen = first.G;
-            currBlue = first.B;
         }
 
-        public void work1()
+        public void reset()
         {
-            if (!fadingOut)
-            {
-
-                currRed -= redStep;
-                currGreen -= greenStep;
-                currBlue -= blueStep;
-
-                Chroma.Instance.Keyboard[(int)keyX, (int)keyY] =
-                                new ColoreColor((byte)currRed, (byte)currGreen, (byte)currBlue);
-
-                stepsTaken++;
-
-                if (stepsTaken == 255)
-                {
-                    fadingOut = true;
-                }
-                fadingOut = true;
-            }
-            else
-            {
-                    // TODO: reset this instance of the Key.
-                    fadingOut = false;
-                    Random rand = new Random();
-                    keyX = rand.Next(0, Constants.MaxRows);
-                    keyY = rand.Next(0, Constants.MaxColumns);
-            }
+            Random rand = new Random();
+            keyX = rand.Next(0, Constants.MaxRows);
+            keyY = rand.Next(0, Constants.MaxColumns);
         }
-
-        public void work()
-        {
-            if (!fadingOut)
-            {
-                currRed -= redStep;
-                currGreen -= greenStep;
-                currBlue -= blueStep;
-
-                Chroma.Instance.Keyboard[(int)keyX, (int)keyY] =
-                                new ColoreColor((byte)currRed, (byte)currGreen, (byte)currBlue);
-
-                stepsTaken++;
-
-                if (stepsTaken == 255)
-                {
-                    fadingOut = true;
-                }
-            }
-            else
-            {
-                currRed += redStep;
-                currGreen += greenStep;
-                currBlue += blueStep;
-
-                Chroma.Instance.Keyboard[(int)keyX, (int)keyY] =
-                                new ColoreColor((byte)currRed, (byte)currGreen, (byte)currBlue);
-
-                stepsTaken--;
-
-                if (stepsTaken == 0)
-                {
-                    // TODO: reset this instance of the Key.
-                    fadingOut = false;
-                    Random rand = new Random();
-                    keyX = rand.Next(0, Constants.MaxRows);
-                    keyY = rand.Next(0, Constants.MaxColumns);
-                }
-            }
-        }
+        
     }
 }
