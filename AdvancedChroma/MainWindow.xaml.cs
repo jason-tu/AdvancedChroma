@@ -81,36 +81,36 @@ namespace AdvancedChroma
         public static void Starlight()
         {
             Random rand = new Random();
-            ColoreColor defaultColor = new ColoreColor((byte)0, (byte)0, (byte)0);
-            Chroma.Instance.Initialize();
+            ColoreColor defaultColor = new ColoreColor((byte)0, (byte)255, (byte)0);
+           // Chroma.Instance.Initialize();
             Chroma.Instance.Keyboard.SetAll(defaultColor);
 
-            int maxKeys = 20;
+            int maxKeys = 10;
 
             int targetRed = 0;
-            int targetGreen = 255;
-            int targetBlue = 0;
+            int targetGreen = 0;
+            int targetBlue = 255;
             ColoreColor targetColor = new ColoreColor((byte)targetRed, (byte)targetGreen, (byte)targetBlue);
 
             List<StarlightKey> starlightKeys = new List<StarlightKey>();
             for (int i = 0; i < maxKeys; i++)
             {
                 // TODO: Make sure no duplicate keys.
-                starlightKeys.Add(new StarlightKey(defaultColor, targetColor, rand.Next(0, Constants.MaxRows), rand.Next(0, Constants.MaxColumns)));
+                starlightKeys.Add(new StarlightKey(defaultColor, targetColor, rand.Next(0, Constants.MaxRows), rand.Next(0, Constants.MaxColumns), rand));
             }
 
             while (true)
             {
                 foreach (StarlightKey sk in starlightKeys)
                 {
-                    TransitionStarlight(sk, 0, 1);
+                    TransitionStarlight(sk, rand);
                 }
+               Thread.Sleep(5);
             }
         }
 
-        private static void TransitionStarlight(StarlightKey sk, int rest, int duration)
+        private static void TransitionStarlight(StarlightKey sk, Random rand)
         {
-
             //Transition to second color
             if (!sk.fadingOut)
             {
@@ -118,38 +118,33 @@ namespace AdvancedChroma
                 sk.currRed -= sk.redStep;
                 sk.currGreen -= sk.greenStep;
                 sk.currBlue -= sk.blueStep;
-
                 Chroma.Instance.Keyboard[(int)sk.keyX, (int)sk.keyY] =
                             new ColoreColor((byte)sk.currRed, (byte)sk.currGreen, (byte)sk.currBlue);
-                Thread.Sleep(duration);
 
                 sk.step++;
-                if (sk.step == 255)
+                if (sk.step == sk.stepDivisor)
                 {
+                    Chroma.Instance.Keyboard[(int)sk.keyX, (int)sk.keyY] = sk.second;
+
                     sk.fadingOut = true;
                 }
 
             }
 
-            //Color rests
-            Thread.Sleep(rest);
-
-            if (sk.fadingOut)
+            else // Is fading out.
             {
-
                 sk.currRed += sk.redStep;
                 sk.currGreen += sk.greenStep;
                 sk.currBlue += sk.blueStep;
 
                 Chroma.Instance.Keyboard[(int)sk.keyX, (int)sk.keyY] =
                             new ColoreColor((byte)sk.currRed, (byte)sk.currGreen, (byte)sk.currBlue);
-                Thread.Sleep(duration);
 
                 sk.step--;
                 if (sk.step == 0)
                 {
-                    sk.reset();
-                    sk.fadingOut = false;
+                    Chroma.Instance.Keyboard[(int)sk.keyX, (int)sk.keyY] = sk.first;
+                    sk.reset(rand);
                 }
 
             }
