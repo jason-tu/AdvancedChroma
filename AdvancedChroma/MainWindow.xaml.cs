@@ -63,6 +63,7 @@ namespace AdvancedChroma
                 defaultColorReactive = new ColoreColor(Convert.ToByte(defaultColorRedReactive.Text), Convert.ToByte(defaultColorGreenReactive.Text), Convert.ToByte(defaultColorBlueReactive.Text));
                 targetColorReactive = new ColoreColor(Convert.ToByte(targetColorRedReactive.Text), Convert.ToByte(targetColorGreenReactive.Text), Convert.ToByte(targetColorBlueReactive.Text));
                 restReactive = (int)(Convert.ToDouble(restTextBoxReactive.Text) * 1000);
+                // TODO: Add in some sort of gate... Rapid clicking has the below method causing an exception. Corale.Colore.Razer.NativeCallException
                 Chroma.Instance.SetAll(defaultColorReactive);
                 durationReactive = (int)(Convert.ToDouble(durationTextBoxReactive.Text) * 1000);
 

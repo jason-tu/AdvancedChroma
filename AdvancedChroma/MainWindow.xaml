@@ -15,8 +15,8 @@
         <TextBox x:Name="defaultColorBlueReactive" HorizontalAlignment="Left" Height="23" Margin="146,63,0,0" TextWrapping="Wrap" Text="0" VerticalAlignment="Top" Width="28"/>
         <Label x:Name="label" Content="to" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="179,63,0,0"/>
         <TextBox x:Name="targetColorRedReactive" HorizontalAlignment="Left" Height="23" Margin="205,63,0,0" TextWrapping="Wrap" Text="0" VerticalAlignment="Top" Width="28"/>
-        <TextBox x:Name="targetColorGreenReactive" HorizontalAlignment="Left" Height="23" Margin="271,63,0,0" TextWrapping="Wrap" Text="0" VerticalAlignment="Top" Width="28"/>
-        <TextBox x:Name="targetColorBlueReactive" HorizontalAlignment="Left" Height="23" Margin="238,63,0,0" TextWrapping="Wrap" Text="255" VerticalAlignment="Top" Width="28"/>
+        <TextBox x:Name="targetColorGreenReactive" HorizontalAlignment="Left" Height="23" Margin="238,63,0,0" TextWrapping="Wrap" Text="0" VerticalAlignment="Top" Width="28"/>
+        <TextBox x:Name="targetColorBlueReactive" HorizontalAlignment="Left" Height="23" Margin="271,63,0,0" TextWrapping="Wrap" Text="255" VerticalAlignment="Top" Width="28"/>
         <Label x:Name="label1" Content="Secondary color time (how long it will remain as secondary color) (sec): " HorizontalAlignment="Left" Margin="80,89,0,0" VerticalAlignment="Top"/>
         <TextBox x:Name="restTextBoxReactive" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Text="0.5" VerticalAlignment="Top" Width="62" Margin="473,92,0,0"/>
         <Label x:Name="label2" Content="Transition duration (sec):" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="80,117,0,0"/>
