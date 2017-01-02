@@ -154,6 +154,11 @@
             Gets the version of the Chroma SDK that Colore is currently using.
             </summary>
         </member>
+        <member name="P:Corale.Colore.Core.Chroma.Version">
+            <summary>
+            Gets the <see cref="T:System.Version" /> of Colore.
+            </summary>
+        </member>
         <member name="M:Corale.Colore.Core.Chroma.Initialize">
             <summary>
             Initializes the SDK if it hasn't already.
@@ -657,28 +662,6 @@
             </summary>
             <param name="parameter">Additional effect parameter.</param>
         </member>
-        <member name="M:Corale.Colore.Core.GenericDevice.SetStarlight(Corale.Colore.Razer.Effects.Starlight)">
-            <summary>
-            Sets a starlight effect on this device.
-            </summary>
-            <param name="effect">Effect options.</param>
-        </member>
-        <member name="M:Corale.Colore.Core.GenericDevice.SetStarlight(Corale.Colore.Razer.Effects.Duration,System.Int32)">
-            <summary>
-            Sets a starlight effect on this device, using random colors.
-            </summary>
-            <param name="duration">Duration of the effect.</param>
-            <param name="parameter">Additional effect parameter.</param>
-        </member>
-        <member name="M:Corale.Colore.Core.GenericDevice.SetStarlight(Corale.Colore.Core.Color,Corale.Colore.Core.Color,Corale.Colore.Razer.Effects.Duration,System.Int32)">
-            <summary>
-            Sets a starlight effect on this device, using specified colors.
-            </summary>
-            <param name="first">The first color to use.</param>
-            <param name="second">The second color to use.</param>
-            <param name="duration">Duration of the effect.</param>
-            <param name="parameter">Additional effect parameter.</param>
-        </member>
         <member name="M:Corale.Colore.Core.GenericDevice.SetStatic(Corale.Colore.Razer.Effects.Static)">
             <summary>
             Sets a static effect on this device.
@@ -855,6 +838,11 @@
         <member name="P:Corale.Colore.Core.IChroma.SdkVersion">
             <summary>
             Gets the version of the Chroma SDK that Colore is currently using.
+            </summary>
+        </member>
+        <member name="P:Corale.Colore.Core.IChroma.Version">
+            <summary>
+            Gets the <see cref="T:System.Version" /> of Colore.
             </summary>
         </member>
         <member name="M:Corale.Colore.Core.IChroma.Initialize">
@@ -1051,28 +1039,6 @@
             <summary>
             Sets a spectrum cycling effect on this device.
             </summary>
-            <param name="parameter">Additional effect parameter.</param>
-        </member>
-        <member name="M:Corale.Colore.Core.IGenericDevice.SetStarlight(Corale.Colore.Razer.Effects.Starlight)">
-            <summary>
-            Sets a starlight effect on this device.
-            </summary>
-            <param name="effect">Effect options.</param>
-        </member>
-        <member name="M:Corale.Colore.Core.IGenericDevice.SetStarlight(Corale.Colore.Razer.Effects.Duration,System.Int32)">
-            <summary>
-            Sets a starlight effect on this device, using random colors.
-            </summary>
-            <param name="duration">Duration of the effect.</param>
-            <param name="parameter">Additional effect parameter.</param>
-        </member>
-        <member name="M:Corale.Colore.Core.IGenericDevice.SetStarlight(Corale.Colore.Core.Color,Corale.Colore.Core.Color,Corale.Colore.Razer.Effects.Duration,System.Int32)">
-            <summary>
-            Sets a starlight effect on this device, using specified colors.
-            </summary>
-            <param name="first">The first color to use.</param>
-            <param name="second">The second color to use.</param>
-            <param name="duration">Duration of the effect.</param>
             <param name="parameter">Additional effect parameter.</param>
         </member>
         <member name="M:Corale.Colore.Core.IGenericDevice.SetStatic(Corale.Colore.Razer.Effects.Static)">
@@ -1274,12 +1240,6 @@
         <member name="M:Corale.Colore.Core.IKeyboard.SetWave(Corale.Colore.Razer.Keyboard.Effects.Wave)">
             <summary>
             Sets a wave effect on the keyboard.
-            </summary>
-            <param name="effect">Effect options.</param>
-        </member>
-        <member name="M:Corale.Colore.Core.IKeyboard.SetStarlight(Corale.Colore.Razer.Keyboard.Effects.Starlight)">
-            <summary>
-            Sets a starlight effect on the keyboard.
             </summary>
             <param name="effect">Effect options.</param>
         </member>
@@ -1792,12 +1752,6 @@
         <member name="M:Corale.Colore.Core.Keyboard.SetWave(Corale.Colore.Razer.Keyboard.Effects.Wave)">
             <summary>
             Sets a wave effect on the keyboard.
-            </summary>
-            <param name="effect">Effect options.</param>
-        </member>
-        <member name="M:Corale.Colore.Core.Keyboard.SetStarlight(Corale.Colore.Razer.Keyboard.Effects.Starlight)">
-            <summary>
-            Sets a starlight effect on the keyboard.
             </summary>
             <param name="effect">Effect options.</param>
         </member>
@@ -3754,9 +3708,24 @@
             Blade Stealth.
             </summary>
         </member>
+        <member name="F:Corale.Colore.Razer.Devices.Blade14">
+            <summary>
+            Blade 14 (2016 edition).
+            </summary>
+        </member>
         <member name="F:Corale.Colore.Razer.Devices.OverwatchKeyboard">
             <summary>
             Overwatch Keyboard.
+            </summary>
+        </member>
+        <member name="F:Corale.Colore.Razer.Devices.BlackwidowX">
+            <summary>
+            Blackwidow X Keyboard.
+            </summary>
+        </member>
+        <member name="F:Corale.Colore.Razer.Devices.BlackwidowXTe">
+            <summary>
+            Blackwidow X TE Keyboard.
             </summary>
         </member>
         <member name="F:Corale.Colore.Razer.Devices.Mamba">
@@ -3772,6 +3741,31 @@
         <member name="F:Corale.Colore.Razer.Devices.NagaEpic">
             <summary>
             Naga Epic Chroma edition.
+            </summary>
+        </member>
+        <member name="F:Corale.Colore.Razer.Devices.NagaHex">
+            <summary>
+            Naga Hex V2
+            </summary>
+        </member>
+        <member name="F:Corale.Colore.Razer.Devices.Core">
+            <summary>
+            Core (external graphics enclosure).
+            </summary>
+        </member>
+        <member name="F:Corale.Colore.Razer.Devices.LenovoY900">
+            <summary>
+            Chroma enabled Lenovo Y900.
+            </summary>
+        </member>
+        <member name="F:Corale.Colore.Razer.Devices.LenovoY27">
+            <summary>
+            Chroma enabled Lenovo Y27.
+            </summary>
+        </member>
+        <member name="F:Corale.Colore.Razer.Devices.Ornata">
+            <summary>
+            Razer Ornata Keyboard.
             </summary>
         </member>
         <member name="M:Corale.Colore.Razer.Devices.IsValidId(System.Guid)">
@@ -3867,9 +3861,9 @@
             A custom effect.
             </summary>
         </member>
-        <member name="F:Corale.Colore.Razer.Effect.Starlight">
+        <member name="F:Corale.Colore.Razer.Effect.Reserved">
             <summary>
-            The starlight effect.
+            Reserved effect.
             </summary>
         </member>
         <member name="F:Corale.Colore.Razer.Effect.Invalid">
@@ -4255,82 +4249,6 @@
             with default values.
             </summary>
             <returns>A new instance of the <see cref="T:Corale.Colore.Razer.Effects.SpectrumCycling" /> struct.</returns>
-        </member>
-        <member name="T:Corale.Colore.Razer.Effects.Starlight">
-            <summary>
-            Describes the starlight effect for system devices.
-            </summary>
-        </member>
-        <member name="F:Corale.Colore.Razer.Effects.Starlight.Size">
-            <summary>
-            The size of the struct.
-            </summary>
-        </member>
-        <member name="F:Corale.Colore.Razer.Effects.Starlight.Parameter">
-            <summary>
-            Additional effect parameter.
-            </summary>
-        </member>
-        <member name="F:Corale.Colore.Razer.Effects.Starlight.Type">
-            <summary>
-            The starlight effect type.
-            </summary>
-        </member>
-        <member name="F:Corale.Colore.Razer.Effects.Starlight.First">
-            <summary>
-            First color of the effect.
-            </summary>
-        </member>
-        <member name="F:Corale.Colore.Razer.Effects.Starlight.Second">
-            <summary>
-            Second color of the effect.
-            </summary>
-        </member>
-        <member name="F:Corale.Colore.Razer.Effects.Starlight.Duration">
-            <summary>
-            Effect duration.
-            </summary>
-        </member>
-        <member name="M:Corale.Colore.Razer.Effects.Starlight.#ctor(Corale.Colore.Razer.Effects.StarlightType,Corale.Colore.Razer.Effects.Duration,Corale.Colore.Core.Color,Corale.Colore.Core.Color,System.Int32)">
-            <summary>
-            Initializes a new instance of the <see cref="T:Corale.Colore.Razer.Effects.Starlight" /> struct.
-            </summary>
-            <param name="type">The type of starlight effect to make.</param>
-            <param name="duration">Duration of the effect.</param>
-            <param name="first">First color of the effect.</param>
-            <param name="second">Second color of the effect.</param>
-            <param name="parameter">Additional effect parameter.</param>
-        </member>
-        <member name="M:Corale.Colore.Razer.Effects.Starlight.#ctor(Corale.Colore.Razer.Effects.Duration,Corale.Colore.Core.Color,Corale.Colore.Core.Color,System.Int32)">
-            <summary>
-            Initializes a new instance of the <see cref="T:Corale.Colore.Razer.Effects.Starlight" /> struct.
-            </summary>
-            <param name="duration">Effect duration.</param>
-            <param name="first">First color of the effect.</param>
-            <param name="second">Second color of the effect.</param>
-            <param name="parameter">Additional effect parameter.</param>
-        </member>
-        <member name="M:Corale.Colore.Razer.Effects.Starlight.#ctor(Corale.Colore.Razer.Effects.Duration,System.Int32)">
-            <summary>
-            Initializes a new instance of the <see cref="T:Corale.Colore.Razer.Effects.Starlight" /> struct.
-            </summary>
-            <param name="duration">Effect duration.</param>
-            <param name="parameter">Additional effect parameter.</param>
-        </member>
-        <member name="T:Corale.Colore.Razer.Effects.StarlightType">
-            <summary>
-            Supported starlight effect types for system devices.
-            </summary>
-        </member>
-        <member name="F:Corale.Colore.Razer.Effects.StarlightType.Two">
-            <summary>
-            Two colors.
-            </summary>
-        </member>
-        <member name="F:Corale.Colore.Razer.Effects.StarlightType.Random">
-            <summary>
-            Random colors.
-            </summary>
         </member>
         <member name="T:Corale.Colore.Razer.Effects.Static">
             <summary>
@@ -4766,9 +4684,9 @@
             Wave effect.
             </summary>
         </member>
-        <member name="F:Corale.Colore.Razer.Keyboard.Effects.Effect.Starlight">
+        <member name="F:Corale.Colore.Razer.Keyboard.Effects.Effect.Reserved">
             <summary>
-            Starlight effect.
+            Reserved effect.
             </summary>
         </member>
         <member name="F:Corale.Colore.Razer.Keyboard.Effects.Effect.CustomKey">
@@ -4802,55 +4720,6 @@
             </summary>
             <param name="color">Color to apply when key is hit.</param>
             <param name="duration">Duration to illuminate the key.</param>
-        </member>
-        <member name="T:Corale.Colore.Razer.Keyboard.Effects.Starlight">
-            <summary>
-            Describes the starlight effect.
-            </summary>
-        </member>
-        <member name="F:Corale.Colore.Razer.Keyboard.Effects.Starlight.Type">
-            <summary>
-            Effect type.
-            </summary>
-        </member>
-        <member name="F:Corale.Colore.Razer.Keyboard.Effects.Starlight.FirstColor">
-            <summary>
-            The first color to use.
-            </summary>
-        </member>
-        <member name="F:Corale.Colore.Razer.Keyboard.Effects.Starlight.SecondColor">
-            <summary>
-            The second color to use.
-            </summary>
-        </member>
-        <member name="F:Corale.Colore.Razer.Keyboard.Effects.Starlight.Duration">
-            <summary>
-            Duration of the effect.
-            </summary>
-        </member>
-        <member name="M:Corale.Colore.Razer.Keyboard.Effects.Starlight.#ctor(Corale.Colore.Razer.Keyboard.Effects.StarlightType,Corale.Colore.Core.Color,Corale.Colore.Core.Color,Corale.Colore.Razer.Keyboard.Effects.Duration)">
-            <summary>
-            Initializes a new instance of the <see cref="T:Corale.Colore.Razer.Keyboard.Effects.Starlight" /> struct.
-            </summary>
-            <param name="type">Effect type.</param>
-            <param name="firstColor">First color to use.</param>
-            <param name="secondColor">Second color to use.</param>
-            <param name="duration">Duration of the effect.</param>
-        </member>
-        <member name="T:Corale.Colore.Razer.Keyboard.Effects.StarlightType">
-            <summary>
-            Supported starlight effect types for the keyboard.
-            </summary>
-        </member>
-        <member name="F:Corale.Colore.Razer.Keyboard.Effects.StarlightType.Two">
-            <summary>
-            Two colors.
-            </summary>
-        </member>
-        <member name="F:Corale.Colore.Razer.Keyboard.Effects.StarlightType.Random">
-            <summary>
-            Random colors.
-            </summary>
         </member>
         <member name="T:Corale.Colore.Razer.Keyboard.Effects.Static">
             <summary>
@@ -5409,9 +5278,9 @@
             Right square bracket (]) key.
             </summary>
         </member>
-        <member name="F:Corale.Colore.Razer.Keyboard.Key.OemSlash">
+        <member name="F:Corale.Colore.Razer.Keyboard.Key.OemBackslash">
             <summary>
-            Forwards slash (/) key.
+            Backslash (\) key.
             </summary>
         </member>
         <member name="F:Corale.Colore.Razer.Keyboard.Key.OemSemicolon">
@@ -5434,9 +5303,9 @@
             Period/full stop (.) key.
             </summary>
         </member>
-        <member name="F:Corale.Colore.Razer.Keyboard.Key.OemBackslash">
+        <member name="F:Corale.Colore.Razer.Keyboard.Key.OemSlash">
             <summary>
-            Backslash (\) key.
+            Forwards slash (/) key.
             </summary>
         </member>
         <member name="F:Corale.Colore.Razer.Keyboard.Key.EurPound">

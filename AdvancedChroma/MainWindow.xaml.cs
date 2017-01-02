@@ -20,6 +20,7 @@ using Corale.Colore.Razer.Keyboard.Effects;
 using Gma.System.MouseKeyHook;
 using Duration = Corale.Colore.Razer.Keyboard.Effects.Duration;
 using System.Collections;
+using System.ComponentModel;
 
 namespace AdvancedChroma
 {
@@ -42,8 +43,23 @@ namespace AdvancedChroma
         public MainWindow()
         {
             InitializeComponent();
+            this.Closing += OnWindowClosing;
             Chroma.Instance.Initialize();
         }
+
+        public void OnWindowClosing(object sender, CancelEventArgs e)
+        {
+            _runningEffect?.Abort();
+            try
+            {
+                Unsubscribe();
+            }
+            catch (Exception error)
+            {
+                Console.WriteLine(error.Message);
+            }
+        }
+
 
         private void button_Click(object sender, RoutedEventArgs e)
         {
