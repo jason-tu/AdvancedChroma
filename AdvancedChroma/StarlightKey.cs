@@ -11,7 +11,7 @@ using Corale.Colore.Razer.Keyboard;
 
 namespace AdvancedChroma
 {
-    class StarlightKey
+    public class StarlightKey
     {
         public ColoreColor first;
         public ColoreColor second;
@@ -52,9 +52,31 @@ namespace AdvancedChroma
             this.keyX = StaticRandom.Instance.Next(0, Constants.MaxRows);
             this.keyY = StaticRandom.Instance.Next(0, Constants.MaxColumns);
 
-            stepDivisor = StaticRandom.Instance.Next(80, 160);
-            fadingOut = false;
+            while (true)
+            {
+                int containsDuplicate = 0;
+
+                foreach (StarlightKey sk in MainWindow.starlightKeys)
+                {
+                    if (sk.keyX == this.keyX && sk.keyY == this.keyY)
+                    {
+                        containsDuplicate++;
+
+                    }
+                }
+                if (containsDuplicate == 2)
+                {
+                    this.keyX = StaticRandom.Instance.Next(0, Constants.MaxRows);
+                    this.keyY = StaticRandom.Instance.Next(0, Constants.MaxColumns);
+                }
+                else
+                {
+
+                    stepDivisor = StaticRandom.Instance.Next(80, 160);
+                    fadingOut = false;
+                    return;
+                }
+            }
         }
-        
     }
 }

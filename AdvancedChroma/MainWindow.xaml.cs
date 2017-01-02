@@ -31,10 +31,13 @@ namespace AdvancedChroma
         Thread _runningEffect;
         private IKeyboardMouseEvents _mGlobalHook;
         Boolean _isRunning = false;
-        ColoreColor defaultColorReactive;
-        ColoreColor targetColorReactive;
+        static ColoreColor defaultColor;
+        static ColoreColor targetColor;
         int restReactive;
         int durationReactive;
+        public static List<StarlightKey> starlightKeys;
+        static int numberOfKeys;
+        static int starlightDuration;
 
         public MainWindow()
         {
@@ -56,17 +59,21 @@ namespace AdvancedChroma
 
             if (((Button)sender).Name == "starlight")
             {
+                defaultColor = new ColoreColor(Convert.ToByte(defaultColorRedStarlight.Text), Convert.ToByte(defaultColorGreenStarlight.Text), Convert.ToByte(defaultColorBlueStarlight.Text));
+                targetColor = new ColoreColor(Convert.ToByte(starColorRedStarlight.Text), Convert.ToByte(starColorGreenStarlight.Text), Convert.ToByte(starColorBlueStarlight.Text));
+                numberOfKeys = Convert.ToInt32(starlightNumberOfKeys.Text);
+                starlightDuration = Convert.ToInt32(starlightDurationBox.Text);
                 _runningEffect = new Thread(Starlight);
             }
             else if (((Button)sender).Name == "reactive")
             {
-                defaultColorReactive = new ColoreColor(Convert.ToByte(defaultColorRedReactive.Text), Convert.ToByte(defaultColorGreenReactive.Text), Convert.ToByte(defaultColorBlueReactive.Text));
-                targetColorReactive = new ColoreColor(Convert.ToByte(targetColorRedReactive.Text), Convert.ToByte(targetColorGreenReactive.Text), Convert.ToByte(targetColorBlueReactive.Text));
+                defaultColor = new ColoreColor(Convert.ToByte(defaultColorRedReactive.Text), Convert.ToByte(defaultColorGreenReactive.Text), Convert.ToByte(defaultColorBlueReactive.Text));
+                targetColor = new ColoreColor(Convert.ToByte(targetColorRedReactive.Text), Convert.ToByte(targetColorGreenReactive.Text), Convert.ToByte(targetColorBlueReactive.Text));
                 restReactive = (int)(Convert.ToDouble(restTextBoxReactive.Text) * 1000);
                 // TODO: Add in some sort of gate... Rapid clicking has the below method causing an exception. Corale.Colore.Razer.NativeCallException
-                Chroma.Instance.SetAll(defaultColorReactive);
+                Chroma.Instance.SetAll(defaultColor);
                 durationReactive = (int)(Convert.ToDouble(durationTextBoxReactive.Text) * 1000);
-
+                
                 Subscribe();
             }
             try
@@ -82,21 +89,14 @@ namespace AdvancedChroma
         public static void Starlight()
         {
             Random rand = new Random();
-            ColoreColor defaultColor = new ColoreColor((byte)0, (byte)0, (byte)0);
            // Chroma.Instance.Initialize();
             Chroma.Instance.Keyboard.SetAll(defaultColor);
 
-            int maxKeys = 10;
+            int maxKeys = numberOfKeys;
 
-            int targetRed = 255;
-            int targetGreen = 255;
-            int targetBlue = 255;
-            ColoreColor targetColor = new ColoreColor((byte)targetRed, (byte)targetGreen, (byte)targetBlue);
-
-            List<StarlightKey> starlightKeys = new List<StarlightKey>();
+            starlightKeys = new List<StarlightKey>();
             for (int i = 0; i < maxKeys; i++)
             {
-                // TODO: Make sure no duplicate keys.
                 StarlightKey toAdd = new StarlightKey(defaultColor, targetColor, rand.Next(0, Constants.MaxRows), rand.Next(0, Constants.MaxColumns));
                 while (true)
                 {
@@ -104,14 +104,14 @@ namespace AdvancedChroma
                     else starlightKeys.Add(toAdd); break;
                 }
             }
-            //Console.Write(starlightKeys.Count + " count");
+
             while (true)
             {
                 foreach (StarlightKey sk in starlightKeys)
                 {
                     TransitionStarlight(sk);
                 }
-               Thread.Sleep(15);
+               Thread.Sleep(starlightDuration);
             }
         }
 
@@ -202,7 +202,7 @@ namespace AdvancedChroma
 
             _isRunning = true;
 
-            Transition(defaultColorReactive, targetColorReactive, true, restReactive, durationReactive);
+            Transition(defaultColor, targetColor, true, restReactive, durationReactive);
 
             _isRunning = false;
         }
