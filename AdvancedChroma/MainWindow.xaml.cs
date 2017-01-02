@@ -1,25 +1,12 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using Corale.Colore.Core;
 using Corale.Colore.Razer.Keyboard;
 using ColoreColor = Corale.Colore.Core.Color;
 using System.Threading;
-using Corale.Colore.Razer.Keyboard.Effects;
 using Gma.System.MouseKeyHook;
-using Duration = Corale.Colore.Razer.Keyboard.Effects.Duration;
-using System.Collections;
 using System.ComponentModel;
 
 namespace AdvancedChroma
@@ -39,6 +26,7 @@ namespace AdvancedChroma
         public static List<StarlightKey> starlightKeys;
         static int numberOfKeys;
         static int starlightDuration;
+        static Boolean starlightIsRunning;
 
         public MainWindow()
         {
@@ -65,8 +53,18 @@ namespace AdvancedChroma
         {
             try
             {
-                Unsubscribe();
-                _runningEffect?.Abort();
+                while (true)
+                {
+                    if (!_isRunning)
+                    {
+                        starlightKeys = new List<StarlightKey>();
+                        starlightIsRunning = false;
+                        Unsubscribe();
+                        _runningEffect.Abort();
+                        break;
+                    }
+                }
+
             }
             catch
             {
@@ -84,6 +82,7 @@ namespace AdvancedChroma
                         numberOfKeys = Convert.ToInt32(starlightNumberOfKeys.Text);
                         starlightDuration = Convert.ToInt32(starlightDurationBox.Text);
                         _runningEffect = new Thread(Starlight);
+                        starlightIsRunning = true;
                         break;
                     }
                 }
@@ -93,7 +92,6 @@ namespace AdvancedChroma
                 defaultColor = new ColoreColor(Convert.ToByte(defaultColorRedReactive.Text), Convert.ToByte(defaultColorGreenReactive.Text), Convert.ToByte(defaultColorBlueReactive.Text));
                 targetColor = new ColoreColor(Convert.ToByte(targetColorRedReactive.Text), Convert.ToByte(targetColorGreenReactive.Text), Convert.ToByte(targetColorBlueReactive.Text));
                 restReactive = (int)(Convert.ToDouble(restTextBoxReactive.Text) * 1000);
-                // TODO: Add in some sort of gate... Rapid clicking has the below method causing an exception. Corale.Colore.Razer.NativeCallException
                 Chroma.Instance.SetAll(defaultColor);
                 durationReactive = (int)(Convert.ToDouble(durationTextBoxReactive.Text) * 1000);
                 
@@ -112,7 +110,6 @@ namespace AdvancedChroma
         public static void Starlight()
         {
             Random rand = new Random();
-           // Chroma.Instance.Initialize();
             Chroma.Instance.Keyboard.SetAll(defaultColor);
 
             int maxKeys = numberOfKeys;
@@ -128,7 +125,7 @@ namespace AdvancedChroma
                 }
             }
 
-            while (true)
+            while (starlightIsRunning)
             {
                 foreach (StarlightKey sk in starlightKeys)
                 {
@@ -184,9 +181,7 @@ namespace AdvancedChroma
                     Chroma.Instance.Keyboard[(int)sk.keyX, (int)sk.keyY] = sk.first;
                     sk.reset();
                 }
-
             }
-
         }
 
         public static double checkRange(double color)
@@ -242,7 +237,7 @@ namespace AdvancedChroma
             int tempRed = first.R;
             int tempGreen = first.G;
             int tempBlue = first.B;
-
+            
             //Transition to second color
             for (int i = 0; i < 255; i++)
             {
