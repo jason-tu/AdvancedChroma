@@ -32,12 +32,12 @@ namespace AdvancedChroma
         public bool fadingOut = false;
         
 
-        public StarlightKey(ColoreColor first, ColoreColor second, int keyX, int keyY, Random rand)
+        public StarlightKey(ColoreColor first, ColoreColor second, int keyX, int keyY)
         {
             this.first = first;
             this.second = second;
 
-            stepDivisor = rand.Next(80, 160);
+            stepDivisor = StaticRandom.Instance.Next(80, 160);
 
             redStep = ((double)first.R - (double)second.R) / stepDivisor;
             greenStep = ((double)first.G - (double)second.G) / stepDivisor;
@@ -47,13 +47,12 @@ namespace AdvancedChroma
             this.keyY = keyY;
         }
 
-        public void reset(Random rand)
+        public void reset()
         {
+            this.keyX = StaticRandom.Instance.Next(0, Constants.MaxRows);
+            this.keyY = StaticRandom.Instance.Next(0, Constants.MaxColumns);
 
-            this.keyX = rand.Next(0, Constants.MaxRows);
-            this.keyY = rand.Next(0, Constants.MaxColumns);
-
-            stepDivisor = rand.Next(80, 160);
+            stepDivisor = StaticRandom.Instance.Next(80, 160);
             fadingOut = false;
         }
         

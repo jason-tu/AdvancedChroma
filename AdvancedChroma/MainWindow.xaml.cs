@@ -82,14 +82,14 @@ namespace AdvancedChroma
         public static void Starlight()
         {
             Random rand = new Random();
-            ColoreColor defaultColor = new ColoreColor((byte)0, (byte)255, (byte)0);
+            ColoreColor defaultColor = new ColoreColor((byte)0, (byte)0, (byte)0);
            // Chroma.Instance.Initialize();
             Chroma.Instance.Keyboard.SetAll(defaultColor);
 
             int maxKeys = 10;
 
-            int targetRed = 0;
-            int targetGreen = 0;
+            int targetRed = 255;
+            int targetGreen = 255;
             int targetBlue = 255;
             ColoreColor targetColor = new ColoreColor((byte)targetRed, (byte)targetGreen, (byte)targetBlue);
 
@@ -97,20 +97,25 @@ namespace AdvancedChroma
             for (int i = 0; i < maxKeys; i++)
             {
                 // TODO: Make sure no duplicate keys.
-                starlightKeys.Add(new StarlightKey(defaultColor, targetColor, rand.Next(0, Constants.MaxRows), rand.Next(0, Constants.MaxColumns), rand));
+                StarlightKey toAdd = new StarlightKey(defaultColor, targetColor, rand.Next(0, Constants.MaxRows), rand.Next(0, Constants.MaxColumns));
+                while (true)
+                {
+                    if (starlightKeys.Contains(toAdd)) toAdd = new StarlightKey(defaultColor, targetColor, rand.Next(0, Constants.MaxRows), rand.Next(0, Constants.MaxColumns));
+                    else starlightKeys.Add(toAdd); break;
+                }
             }
-
+            //Console.Write(starlightKeys.Count + " count");
             while (true)
             {
                 foreach (StarlightKey sk in starlightKeys)
                 {
-                    TransitionStarlight(sk, rand);
+                    TransitionStarlight(sk);
                 }
-               Thread.Sleep(5);
+               Thread.Sleep(15);
             }
         }
 
-        private static void TransitionStarlight(StarlightKey sk, Random rand)
+        private static void TransitionStarlight(StarlightKey sk)
         {
             //Transition to second color
             if (!sk.fadingOut)
@@ -119,6 +124,11 @@ namespace AdvancedChroma
                 sk.currRed -= sk.redStep;
                 sk.currGreen -= sk.greenStep;
                 sk.currBlue -= sk.blueStep;
+
+                sk.currRed = checkRange(sk.currRed);
+                sk.currGreen = checkRange(sk.currGreen);
+                sk.currBlue = checkRange(sk.currBlue);
+
                 Chroma.Instance.Keyboard[(int)sk.keyX, (int)sk.keyY] =
                             new ColoreColor((byte)sk.currRed, (byte)sk.currGreen, (byte)sk.currBlue);
 
@@ -138,6 +148,10 @@ namespace AdvancedChroma
                 sk.currGreen += sk.greenStep;
                 sk.currBlue += sk.blueStep;
 
+                sk.currRed = checkRange(sk.currRed);
+                sk.currGreen = checkRange(sk.currGreen);
+                sk.currBlue = checkRange(sk.currBlue);
+
                 Chroma.Instance.Keyboard[(int)sk.keyX, (int)sk.keyY] =
                             new ColoreColor((byte)sk.currRed, (byte)sk.currGreen, (byte)sk.currBlue);
 
@@ -145,11 +159,18 @@ namespace AdvancedChroma
                 if (sk.step == 0)
                 {
                     Chroma.Instance.Keyboard[(int)sk.keyX, (int)sk.keyY] = sk.first;
-                    sk.reset(rand);
+                    sk.reset();
                 }
 
             }
 
+        }
+
+        public static double checkRange(double color)
+        {
+            if (color < 0) return 0;
+            else if (color > 255) return 255;
+            else return color;
         }
 
         public void Subscribe()
