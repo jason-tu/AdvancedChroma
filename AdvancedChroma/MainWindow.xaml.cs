@@ -65,8 +65,8 @@ namespace AdvancedChroma
         {
             try
             {
-                _runningEffect?.Abort();
                 Unsubscribe();
+                _runningEffect?.Abort();
             }
             catch
             {
@@ -75,11 +75,18 @@ namespace AdvancedChroma
 
             if (((Button)sender).Name == "starlight")
             {
-                defaultColor = new ColoreColor(Convert.ToByte(defaultColorRedStarlight.Text), Convert.ToByte(defaultColorGreenStarlight.Text), Convert.ToByte(defaultColorBlueStarlight.Text));
-                targetColor = new ColoreColor(Convert.ToByte(starColorRedStarlight.Text), Convert.ToByte(starColorGreenStarlight.Text), Convert.ToByte(starColorBlueStarlight.Text));
-                numberOfKeys = Convert.ToInt32(starlightNumberOfKeys.Text);
-                starlightDuration = Convert.ToInt32(starlightDurationBox.Text);
-                _runningEffect = new Thread(Starlight);
+                while (true)
+                {
+                    if (!_isRunning)
+                    {
+                        defaultColor = new ColoreColor(Convert.ToByte(defaultColorRedStarlight.Text), Convert.ToByte(defaultColorGreenStarlight.Text), Convert.ToByte(defaultColorBlueStarlight.Text));
+                        targetColor = new ColoreColor(Convert.ToByte(starColorRedStarlight.Text), Convert.ToByte(starColorGreenStarlight.Text), Convert.ToByte(starColorBlueStarlight.Text));
+                        numberOfKeys = Convert.ToInt32(starlightNumberOfKeys.Text);
+                        starlightDuration = Convert.ToInt32(starlightDurationBox.Text);
+                        _runningEffect = new Thread(Starlight);
+                        break;
+                    }
+                }
             }
             else if (((Button)sender).Name == "reactive")
             {

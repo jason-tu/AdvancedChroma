@@ -4,7 +4,6 @@ C:\Users\Jason\Documents\GitHub\AdvancedChroma\AdvancedChroma\bin\Release\Advanc
 C:\Users\Jason\Documents\GitHub\AdvancedChroma\AdvancedChroma\bin\Release\Corale.Colore.dll
 C:\Users\Jason\Documents\GitHub\AdvancedChroma\AdvancedChroma\bin\Release\Gma.System.MouseKeyHook.dll
 C:\Users\Jason\Documents\GitHub\AdvancedChroma\AdvancedChroma\bin\Release\Corale.Colore.xml
-C:\Users\Jason\Documents\GitHub\AdvancedChroma\AdvancedChroma\obj\Release\AdvancedChroma.csprojResolveAssemblyReference.cache
 C:\Users\Jason\Documents\GitHub\AdvancedChroma\AdvancedChroma\obj\Release\MainWindow.g.cs
 C:\Users\Jason\Documents\GitHub\AdvancedChroma\AdvancedChroma\obj\Release\App.g.cs
 C:\Users\Jason\Documents\GitHub\AdvancedChroma\AdvancedChroma\obj\Release\AdvancedChroma_MarkupCompile.cache
